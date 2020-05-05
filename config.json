@@ -313,12 +313,16 @@
 					"color": "#665191"
 				},
 				{
-					"name": "Temuco",
-					"code": "Temuco",
-					"color": "#d45087"
+					"name": "Vitacura",
+					"code": "Vitacura",
+					"color": "white"
 				}
 			]
 		}
+	},
+	"milestoneSources":
+	{
+		"chile-cuarentena": "https://docs.google.com/spreadsheets/d/1IjirW9zoW5H-x8AnQcQaKXZXiS1tCuTs0PxSkNxYE0g/export?format=csv&id=1IjirW9zoW5H-x8AnQcQaKXZXiS1tCuTs0PxSkNxYE0g&gid=0"
 	},
 	"defaults":
 	{

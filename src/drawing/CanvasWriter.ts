@@ -6,6 +6,8 @@ import { Point, Box } from '../util/Types';
 // @ts-ignore
 import * as promisePipe from 'promisepipe';
 
+const SHADOW_BLUR = 8;
+
 export default class CanvasWriter
 {
 	private background: string;
@@ -49,21 +51,25 @@ export default class CanvasWriter
 		this.drawPolyline(color, lineWidth, [from, to], box);
 	}
 
-	public drawPolyline(color: string, lineWidth: number, points: Point[], box: Box|null = null)
+	public drawPolyline(color: string, lineWidth: number, points: Point[],
+		box: Box|null = null, shadow: string|null = null)
 	{
 		if (points.length < 2)
 			return;
 
 		this.useMaskBox(box, () =>
 		{
-			this.ctx.strokeStyle = color;
-			this.ctx.lineWidth = lineWidth;
-			this.ctx.beginPath();
-			const first = points[0];
-			this.ctx.moveTo(first.x, first.y);
-			for (let index = 1; index < points.length; index++)
-				this.ctx.lineTo(points[index].x, points[index].y);
-			this.ctx.stroke();
+			this.useShadow(shadow, () =>
+			{
+				this.ctx.strokeStyle = color;
+				this.ctx.lineWidth = lineWidth;
+				this.ctx.beginPath();
+				const first = points[0];
+				this.ctx.moveTo(first.x, first.y);
+				for (let index = 1; index < points.length; index++)
+					this.ctx.lineTo(points[index].x, points[index].y);
+				this.ctx.stroke();
+			});
 		});
 	}
 
@@ -122,6 +128,25 @@ export default class CanvasWriter
 		}
 		finally {
 			if (box)
+				this.ctx.restore();
+		}
+	}
+
+	private useShadow(shadow: string | null, f: () => void) {
+		try
+		{
+			if (shadow)
+			{
+				this.ctx.save();
+				this.ctx.shadowBlur = SHADOW_BLUR;
+				this.ctx.shadowColor = shadow;
+			}
+
+			f();
+		}
+		finally
+		{
+			if (shadow)
 				this.ctx.restore();
 		}
 	}

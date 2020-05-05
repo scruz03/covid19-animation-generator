@@ -8,9 +8,15 @@ export interface DataPoint {
 	value: number;
 }
 
+export interface Milestone {
+	date: DateTime;
+	color: string;
+}
+
 export interface TimeSeries {
 	name: string;
 	data: DataPoint[];
+	milestones: Milestone[] | null;
 }
 
 // Config
@@ -68,6 +74,7 @@ export interface DataSource {
 
 export interface Configuration {
 	dataSources: { [key: string]: DataSource };
+	milestoneSources: { [key: string]: string };
 	days: number;
 	framesPerDay: number;
 	extraEndFrames: number;
@@ -119,6 +126,7 @@ export interface PlotSeries {
 	code: string;
 	color: string;
 	points: PlotPoint[];
+	milestones: Milestone[] | null
 }
 
 export interface Point {

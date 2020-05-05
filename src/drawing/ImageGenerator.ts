@@ -1,4 +1,5 @@
 import { DateTime } from 'luxon';
+import * as Enumerable from 'linq';
 
 import { TimeSeries, SeriesConfiguration, ColorSchema, Layout, FrameInfo, PlotSeries } from '../util/Types';
 import AnimationPipeline from '../animation/AnimationPipeline';
@@ -59,7 +60,8 @@ export default class ImageGenerator
 			return {
 				code: seriesConf.code,
 				color: seriesConf.color,
-				points: Log10PlotPointsGenerator.generate(found.data)
+				points: Log10PlotPointsGenerator.generate(found.data),
+				milestones: found.milestones
 			};
 		});
 	}
@@ -70,8 +72,8 @@ export default class ImageGenerator
 		for (const series of frame.series)
 		{
 			// Draw series
-			this.drawSeriesLines(series, writer);
-			this.drawSeriesCircle(series, writer);
+			const lastColor = this.drawSeriesLines(series, writer);
+			this.drawSeriesCircle(series, writer, lastColor);
 			this.drawSeriesLabel(series, writer);
 
 			// Draw other items
@@ -82,21 +84,67 @@ export default class ImageGenerator
 		await writer.save();
 	}
 
-	private drawSeriesLines(series: PlotSeries, writer: CanvasWriter)
+	private drawSeriesLines(series: PlotSeries, writer: CanvasWriter): string | null
 	{
 		if (series.points.length < 2)
-			return;
+			return null;
 
-		writer.drawPolyline(series.color, 3, series.points, this.layout.plotArea);
+		// No milestones
+		if (series.milestones === null)
+		{
+			writer.drawPolyline(
+				series.color, 3,
+				series.points,
+				this.layout.plotArea);
+			return null;
+		}
+
+		// Milestones
+		// Read groups
+		let lastColor = null;
+		for (let index = -1; index < series.milestones.length; index++)
+		{
+			const milestone = index >= 0 ?
+				series.milestones[index] :
+				null;
+			const currentColor = milestone ?
+				milestone.color :
+				series.color;
+			const firstDate = milestone ?
+				milestone.date :
+				series.points[0].date;
+			const lastDate = index < series.milestones.length - 1 ?
+				series.milestones[index + 1].date :
+				series.points[series.points.length - 1].date;
+			if (+firstDate >= +lastDate)
+				continue;
+
+			const points = Enumerable
+				.from(series.points)
+				.where(p => +p.date >= +firstDate)
+				.where(p => +p.date <= +lastDate)
+				.toArray();
+			if (points.length < 0)
+				continue;
+
+			writer.drawPolyline(
+				currentColor,
+				3,
+				points,
+				this.layout.plotArea);
+			lastColor = currentColor;
+		}
+
+		return lastColor;
 	}
 
-	private drawSeriesCircle(series: PlotSeries, writer: CanvasWriter)
+	private drawSeriesCircle(series: PlotSeries, writer: CanvasWriter, forceColor: string | null)
 	{
 		if (!series.points.length)
 			return;
 
 		const point = series.points[series.points.length - 1];
-		writer.drawCircle(this.layout.circleSize, series.color, point, this.layout.plotArea);
+		writer.drawCircle(this.layout.circleSize, forceColor || series.color, point, this.layout.plotArea);
 	}
 
 	private drawSeriesLabel(series: PlotSeries, writer: CanvasWriter)

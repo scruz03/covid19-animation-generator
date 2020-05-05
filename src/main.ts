@@ -7,6 +7,8 @@ import ConfigLoader from './configuration/ConfigLoader';
 import DataLoader from './data/DataLoader';
 import ImageGenerator from './drawing/ImageGenerator';
 import ParameterLoader from './parameters/ParametersLoader';
+import MilestonesLoader from './data/MilestonesLoader';
+import DataSourceFilter from './util/DataSourceFilter';
 
 // Constants
 const OUTPUT_PATH = path.join(__dirname, '../output');
@@ -23,10 +25,24 @@ const main = async () =>
 	const options = ParameterLoader.load(config.defaults);
 
 	// Read data
-	const dataSource = config.dataSources[options.source];
+	let dataSource = config.dataSources[options.source];
 	if (!dataSource)
 		throw new Error(`Data source not found: ${options.source}`);
-	const timeSeries = await DataLoader.load (dataSource);
+	if (options.filter)
+		dataSource = DataSourceFilter.apply(dataSource, options.filter);
+	let timeSeries = await DataLoader.load (dataSource);
+
+	// Milestones
+	if (options.milestoneSource)
+	{
+		const milestoneSource = config.milestoneSources[options.milestoneSource];
+		if (!milestoneSource)
+			throw new Error(`Milestone source not found: ${options.milestoneSource}`);
+		timeSeries = await MilestonesLoader.load(
+			timeSeries,
+			options.milestoneSource,
+			milestoneSource);
+	}
 
 	// Generate
 	const colorSchema = config.colorSchemas[options.schema];
