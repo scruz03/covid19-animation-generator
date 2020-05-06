@@ -52,7 +52,32 @@ const MILESTONES: { [key: string]: Milestone[] } = {
 		{ date: DateTime.fromISO('2020-01-01'), color: GREEN },
 		{ date: DateTime.fromISO('2020-03-26'), color: RED },
 		{ date: DateTime.fromISO('2020-04-14'), color: GREEN },
-	]
+	],
+	'Osorno': [
+		{ date: DateTime.fromISO('2020-01-01'), color: GREEN },
+		{ date: DateTime.fromISO('2020-03-30'), color: RED },
+		{ date: DateTime.fromISO('2020-05-01'), color: GREEN },
+	],
+	'Ñuñoa': [
+		{ date: DateTime.fromISO('2020-01-01'), color: GREEN },
+		{ date: DateTime.fromISO('2020-03-26'), color: RED },
+		{ date: DateTime.fromISO('2020-04-14'), color: YELLOW },
+	],
+	'Chillán': [
+		{ date: DateTime.fromISO('2020-01-01'), color: GREEN },
+		{ date: DateTime.fromISO('2020-03-30'), color: RED },
+		{ date: DateTime.fromISO('2020-04-23'), color: GREEN },
+	],
+	'Hualpén': [
+		{ date: DateTime.fromISO('2020-01-01'), color: GREEN },
+		{ date: DateTime.fromISO('2020-04-06'), color: RED },
+		{ date: DateTime.fromISO('2020-04-17'), color: GREEN },
+	],
+	'Padre Las Casas': [
+		{ date: DateTime.fromISO('2020-01-01'), color: GREEN },
+		{ date: DateTime.fromISO('2020-03-28'), color: RED },
+		{ date: DateTime.fromISO('2020-04-17'), color: GREEN },
+	],
 };
 const NONE = [{ date: DateTime.fromISO('2020-01-01'), color: GREEN }];
 
