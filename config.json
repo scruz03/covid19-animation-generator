@@ -288,34 +288,34 @@
 					"color": "#ff7c43"
 				},
 				{
+					"name": "Vitacura",
+					"code": "Vitacura",
+					"color": "white"
+				},
+				{
+					"name": "Temuco",
+					"code": "Temuco",
+					"color": "#FF9D00"
+				},
+				{
+					"name": "Las Condes",
+					"code": "Las Condes",
+					"color": "#FF00B3"
+				},
+				{
 					"name": "Independencia",
 					"code": "Independencia",
-					"color": "#9BFF84"
+					"color": "#FF00B3"
 				},
 				{
 					"name": "Quilicura",
 					"code": "Quilicura",
-					"color": "#E28888"
+					"color": "#FF00B3"
 				},
 				{
-					"name": "San Bernardo",
-					"code": "San Bernardo",
-					"color": "#0076AC"
-				},
-				{
-					"name": "Recoleta",
-					"code": "Recoleta",
-					"color": "white"
-				},
-				{
-					"name": "La Florida",
-					"code": "La Florida",
-					"color": "#665191"
-				},
-				{
-					"name": "Vitacura",
-					"code": "Vitacura",
-					"color": "white"
+					"name": "Providencia",
+					"code": "Providencia",
+					"color": "#FF00B3"
 				}
 			]
 		}

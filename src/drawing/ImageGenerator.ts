@@ -109,7 +109,7 @@ export default class ImageGenerator
 				null;
 			const currentColor = milestone ?
 				milestone.color :
-				series.color;
+				'white';
 			const firstDate = milestone ?
 				milestone.date :
 				series.points[0].date;
@@ -124,7 +124,7 @@ export default class ImageGenerator
 				.where(p => +p.date >= +firstDate)
 				.where(p => +p.date <= +lastDate)
 				.toArray();
-			if (points.length < 0)
+			if (points.length < 2)
 				continue;
 
 			writer.drawPolyline(
@@ -144,7 +144,7 @@ export default class ImageGenerator
 			return;
 
 		const point = series.points[series.points.length - 1];
-		writer.drawCircle(this.layout.circleSize, forceColor || series.color, point, this.layout.plotArea);
+		writer.drawCircle(this.layout.circleSize, forceColor || 'white', point, this.layout.plotArea);
 	}
 
 	private drawSeriesLabel(series: PlotSeries, writer: CanvasWriter)

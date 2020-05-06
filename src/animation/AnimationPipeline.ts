@@ -20,9 +20,9 @@ export default class AnimationPipeline
 		this.plotArea = plotArea;
 		this.animations = [
 			new TimeAnimation(series, frames, days),
-			new FixedFrameAnimation(series, extraFrames / 2),
-			new ZoomAnimation(series, lastCode),
-			new FixedFrameAnimation(series, extraFrames)
+			new FixedFrameAnimation(series, extraFrames),
+			// new ZoomAnimation(series, lastCode),
+			// new FixedFrameAnimation(series, extraFrames)
 		];
 	}
 
